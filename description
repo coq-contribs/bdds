@@ -13,3 +13,5 @@ Description: Provides BDD algorithms running under Coq.
 Keywords: BDD binary decision diagram classical propositional
         logic validity satisfiability model-checking reflection
 Require: graphs
+Category: Computer Science/Decision Procedures and Certified Algorithms/Decision procedures
+Category: Miscellaneous/Extracted Programs/Decision procedures
