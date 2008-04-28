@@ -10,8 +10,9 @@ Description: Provides BDD algorithms running under Coq.
         to get certified BDD algorithms by extraction.
         First step towards actual symbolic model-checkers
         in Coq.  See file README for operation.
-Keywords: BDD binary decision diagram classical propositional
-        logic validity satisfiability model-checking reflection
-Require: graphs
+Keywords: BDD, binary decision diagrams, classical logic,
+	  propositional logic, validity, satisfiability, 
+	  model-checking, reflection
+Require: IntMap
 Category: Computer Science/Decision Procedures and Certified Algorithms/Decision procedures
 Category: Miscellaneous/Extracted Programs/Decision procedures
