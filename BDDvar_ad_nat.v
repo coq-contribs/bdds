@@ -31,7 +31,7 @@ Definition BDDone := Npos 1.
     | N0, N0 => Datatypes.Eq
     | N0, Npos _ => Datatypes.Lt
     | Npos _, N0 => Datatypes.Gt
-    | Npos p1, Npos p2 => (p1 ?= p2)%positive Datatypes.Eq
+    | Npos p1, Npos p2 => Pcompare p1 p2 Datatypes.Eq
     end.
 
 Definition BDDvar_eq := Neqb.
