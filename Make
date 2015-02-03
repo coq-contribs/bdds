@@ -1,5 +1,4 @@
 -R . BDDs
--R ../../Cachan/IntMap IntMap
 BDDdummy_lemma_2.v 
 BDDdummy_lemma_3.v 
 BDDdummy_lemma_4.v 
@@ -37,4 +36,3 @@ extraction
 	extraction/dyade extraction/ztwaalf1_be
 	@echo '******************** End of test ***********************'"
   "extraction/dyade" test   
-
