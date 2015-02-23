@@ -18,7 +18,7 @@ Require Export Bool.
 Require Export Sumbool.
 Require Export Arith.
 Require Export ZArith NArith Nnat Ndec Ndigits.
-Require Export Allmaps.
+From IntMap Require Export Allmaps.
 Require Export Wf_nat.
 
 Require Export BDDvar_ad_nat.
