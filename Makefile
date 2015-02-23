@@ -188,7 +188,7 @@ endif
 #                                     #
 #######################################
 
-all: $(VOFILES) $(CMOFILES) $(if $(HASNATDYNLINK_OR_EMPTY),$(CMXSFILES)) test\
+all: $(VOFILES) $(CMOFILES) $(if $(HASNATDYNLINK_OR_EMPTY),$(CMXSFILES)) testbg\
   extraction/dyade\
   dyade.ml\
   ./extraction
@@ -237,13 +237,13 @@ beautify: $(VFILES:=.beautified)
 #                 #
 ###################
 
-test: extraction/dyade
+testbg: extraction/dyade
 	@echo '***** test: checking the tautology ztwaalf1_be *****'
 	extraction/dyade extraction/ztwaalf1_be
 	@echo '******************** End of test ***********************'
 
 extraction/dyade: dyade.ml
-	cd ./extraction ; $(MAKE) all
+	(cd ./extraction ; $(MAKE) all)
 
 dyade.ml: extract.vo
 
@@ -303,7 +303,7 @@ clean:
 	rm -f $(VOFILES) $(VOFILES:.vo=.vio) $(GFILES) $(VFILES:.v=.v.d) $(VFILES:=.beautified) $(VFILES:=.old)
 	rm -f all.ps all-gal.ps all.pdf all-gal.pdf all.glob $(VFILES:.v=.glob) $(VFILES:.v=.tex) $(VFILES:.v=.g.tex) all-mli.tex
 	- rm -rf html mlihtml uninstall_me.sh
-	- rm -rf test
+	- rm -rf testbg
 	- rm -rf extraction/dyade
 	- rm -rf dyade.ml
 	+cd ./extraction && $(MAKE) clean

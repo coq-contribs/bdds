@@ -9,10 +9,10 @@ OBJ_I = dyade.cmx \
 	parser.cmi
 
 OBJ= 	dyade.cmx \
- 	lexer.cmx \
+	lexer.cmx \
 	parser.cmx \
 	main.cmx \
- 
+
 PROG= dyade
 
 
@@ -45,3 +45,5 @@ clean :
 	parser.ml \
 	parser.mli
 
+install :
+	true
