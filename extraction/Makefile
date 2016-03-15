@@ -52,6 +52,7 @@ install :
 	true
 
 parser.mli : dyade.cmi
-lexer.cmx : parser.cmi
-main.cmx : dyade.cmx
-parser.cmx : dyade.cmx
+lexer.cmx : parser.cmi dyade.cmi dyade.cmx
+main.cmx : dyade.cmi lexer.cmx
+parser.cmx : dyade.cmi
+dyade.cmx : dyade.cmi
