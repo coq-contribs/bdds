@@ -29,7 +29,6 @@ tauto.v
 u.v 
 werner.v
 extract.v
-extraction
 -extra dyade.ml extract.vo ""
 -extra extraction/dyade "dyade.ml" "(cd ./extraction ; $(MAKE) all)"
 -extra testbg "extraction/dyade"
