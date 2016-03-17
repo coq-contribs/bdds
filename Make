@@ -1,4 +1,6 @@
--R . BDDs -R ./int-map IntMap
+-R . BDDs
+-R ./int-map IntMap
+
 BDDdummy_lemma_2.v 
 BDDdummy_lemma_3.v 
 BDDdummy_lemma_4.v 
@@ -28,6 +30,7 @@ tauto.v
 u.v 
 werner.v
 extract.v
+
 -extra extraction/dyade "extract.vo" "($(MAKE) -C extraction all)"
 -extra testbg extraction/dyade
        "@echo '***** test: checking the tautology ztwaalf1_be *****'
