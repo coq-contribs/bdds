@@ -5,7 +5,7 @@ LIB= unix.cmxa
 LEX= $(CAMLBIN)ocamllex
 YACC= $(CAMLBIN)ocamlyacc
 
-OBJ_I = dyade.cmx \
+OBJ_I = dyade.cmi \
 	parser.cmi
 
 OBJ= 	dyade.cmx \
@@ -20,9 +20,6 @@ all : 	$(PROG)
 
 $(PROG) :  $(OBJ_I) $(OBJ)	
 	$(CC) $(FLAGS) -o $(PROG) $(LIB) $(OBJ) 
-
-dyade.ml : 
-	cp ../dyade.ml dyade.ml
 
 parser.ml parser.mli : parser.mly
 	$(YACC) parser.mly
@@ -40,10 +37,14 @@ lexer.ml : lexer.mll
 clean : 	
 	rm -f *.o *.cmx *.cmi \
 	$(PROG) \
-	dyade.ml \
 	lexer.ml \
 	parser.ml \
 	parser.mli
+
+parser.cmx : dyade.cmi
+parser.cmi : dyade.cmi
+main.cmx : lexer.cmx
+lexer.cmx : parser.cmi
 
 install :
 	true
