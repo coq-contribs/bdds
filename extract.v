@@ -15,6 +15,7 @@
 
 
 Require Import bdds.
+Require Extraction.
 
 Extract Inductive bool => bool [ true false ].
 Extraction "extraction/dyade.ml" is_tauto.
