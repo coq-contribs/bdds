@@ -39,16 +39,16 @@ Fixpoint BDDor_1 (cfg : BDDconfig) (memo : BDDor_memo)
   match BDDor_memo_lookup memo node1 node2 with
   | Some node => (cfg, (node, memo))
   | None =>
-      if Neqb node1 BDDzero
+      if N.eqb node1 BDDzero
       then (cfg, (node2, BDDor_memo_put memo BDDzero node2 node2))
       else
-       if Neqb node1 BDDone
+       if N.eqb node1 BDDone
        then (cfg, (BDDone, BDDor_memo_put memo BDDone node2 BDDone))
        else
-        if Neqb node2 BDDzero
+        if N.eqb node2 BDDzero
         then (cfg, (node1, BDDor_memo_put memo node1 BDDzero node1))
         else
-         if Neqb node2 BDDone
+         if N.eqb node2 BDDone
          then (cfg, (BDDone, BDDor_memo_put memo node1 BDDone BDDone))
          else
           match bound with
@@ -380,13 +380,13 @@ Lemma BDDor_1_lemma_zero_1 :
  BDDor_1 cfg memo node1 BDDzero bound =
  (cfg, (node1, BDDor_memo_put memo node1 BDDzero node1)).
 Proof.
-  intros cfg memo node1 bound H.  elim bound.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (Neqb node1 BDDzero)).
+  intros cfg memo node1 bound H.  elim bound.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (N.eqb node1 BDDzero)).
   intro y.  rewrite y.  cut (node1 = BDDzero).  intro H0.  rewrite H0; reflexivity.  
-  apply Neqb_complete.  assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (Neqb node1 BDDone)); intro y0.
+  apply Neqb_complete.  assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (N.eqb node1 BDDone)); intro y0.
   rewrite y0.  cut (node1 = BDDone).  intro H0.  rewrite H0; reflexivity.  apply Neqb_complete.
-  assumption.  rewrite y0.  reflexivity.  intros n H0.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (Neqb node1 BDDzero)).
+  assumption.  rewrite y0.  reflexivity.  intros n H0.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (N.eqb node1 BDDzero)).
   intro y.  rewrite y.  cut (node1 = BDDzero).  intro H1.  rewrite H1.  reflexivity.
-  apply Neqb_complete; assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (Neqb node1 BDDone)).
+  apply Neqb_complete; assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (N.eqb node1 BDDone)).
   intro y0.  rewrite y0.  cut (node1 = BDDone).  intro H1.  rewrite H1.  reflexivity.  
   apply Neqb_complete.  assumption.  intro y0.  rewrite y0.  reflexivity.
 Qed.
@@ -397,13 +397,13 @@ Lemma BDDor_1_lemma_one_1 :
  BDDor_1 cfg memo node1 BDDone bound =
  (cfg, (BDDone, BDDor_memo_put memo node1 BDDone BDDone)).
 Proof.
-  intros cfg memo node1 bound H.  elim bound.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (Neqb node1 BDDzero)).
+  intros cfg memo node1 bound H.  elim bound.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (N.eqb node1 BDDzero)).
   intro y.  rewrite y.  cut (node1 = BDDzero).  intro H0.  rewrite H0; reflexivity.
-  apply Neqb_complete.  assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (Neqb node1 BDDone)); intro y0.
+  apply Neqb_complete.  assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (N.eqb node1 BDDone)); intro y0.
   rewrite y0.  cut (node1 = BDDone).  intro H0.  rewrite H0; reflexivity.  apply Neqb_complete.
-  assumption.  rewrite y0.  reflexivity.  intros n H0.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (Neqb node1 BDDzero)).
+  assumption.  rewrite y0.  reflexivity.  intros n H0.  simpl in |- *.  rewrite H.  elim (sumbool_of_bool (N.eqb node1 BDDzero)).
   intro y.  rewrite y.  cut (node1 = BDDzero).  intro H1.  rewrite H1.  reflexivity.
-  apply Neqb_complete; assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (Neqb node1 BDDone)).
+  apply Neqb_complete; assumption.  intro y.  rewrite y.  elim (sumbool_of_bool (N.eqb node1 BDDone)).
   intro y0.  rewrite y0.  cut (node1 = BDDone).  intro H1.  rewrite H1.  reflexivity.
   apply Neqb_complete.  assumption.  intro y0.  rewrite y0.  reflexivity.
 Qed.
@@ -509,8 +509,8 @@ Lemma BDDor_1_lemma_internal_1 :
                            (low cfg node2) bound'))) 
                   (high cfg node1) (high cfg node2) bound'))))))).
 Proof.
-  intros cfg memo node1 node2 bound bound' H H0 H1 H2 H3 H4 H5.  rewrite H4.  simpl in |- *.  rewrite H.  cut (Neqb node1 BDDzero = false).  cut (Neqb node1 BDDone = false).
-  cut (Neqb node2 BDDzero = false).  cut (Neqb node2 BDDone = false).  intros H6 H7 H8 H9.
+  intros cfg memo node1 node2 bound bound' H H0 H1 H2 H3 H4 H5.  rewrite H4.  simpl in |- *.  rewrite H.  cut (N.eqb node1 BDDzero = false).  cut (N.eqb node1 BDDone = false).
+  cut (N.eqb node2 BDDzero = false).  cut (N.eqb node2 BDDone = false).  intros H6 H7 H8 H9.
   rewrite H6; rewrite H7; rewrite H8; rewrite H9; rewrite H5; reflexivity.
   apply not_true_is_false.  unfold not in |- *.  intro H6.  cut (node2 = BDDone).  intro H7.
   inversion H2.  inversion H8.  inversion H9.  rewrite H7 in H10.  rewrite (config_OK_one cfg H0) in H10; discriminate.
@@ -579,8 +579,8 @@ Lemma BDDor_1_lemma_internal_2 :
                   (snd (snd (BDDor_1 cfg memo node1 (low cfg node2) bound')))
                   node1 (high cfg node2) bound'))))))).
 Proof.
-  intros cfg memo node1 node2 bound bound' H H0 H1 H2 H3 H4 H5.  rewrite H4.  simpl in |- *.  rewrite H.  cut (Neqb node1 BDDzero = false).  cut (Neqb node1 BDDone = false).
-  cut (Neqb node2 BDDzero = false).  cut (Neqb node2 BDDone = false).  intros H6 H7 H8 H9.
+  intros cfg memo node1 node2 bound bound' H H0 H1 H2 H3 H4 H5.  rewrite H4.  simpl in |- *.  rewrite H.  cut (N.eqb node1 BDDzero = false).  cut (N.eqb node1 BDDone = false).
+  cut (N.eqb node2 BDDzero = false).  cut (N.eqb node2 BDDone = false).  intros H6 H7 H8 H9.
   rewrite H6; rewrite H7; rewrite H8; rewrite H9; rewrite H5; reflexivity.
   apply not_true_is_false.  unfold not in |- *.  intro H6.  cut (node2 = BDDone).  intro H7.
   inversion H2.  inversion H8.  inversion H9.  rewrite H7 in H10.  rewrite (config_OK_one cfg H0) in H10; discriminate.
@@ -649,8 +649,8 @@ Lemma BDDor_1_lemma_internal_3 :
                   (snd (snd (BDDor_1 cfg memo (low cfg node1) node2 bound')))
                   (high cfg node1) node2 bound'))))))).
 Proof.
-  intros cfg memo node1 node2 bound bound' H H0 H1 H2 H3 H4 H5.  rewrite H4.  simpl in |- *.  rewrite H.  cut (Neqb node1 BDDzero = false).  cut (Neqb node1 BDDone = false).
-  cut (Neqb node2 BDDzero = false).  cut (Neqb node2 BDDone = false).  intros H6 H7 H8 H9.
+  intros cfg memo node1 node2 bound bound' H H0 H1 H2 H3 H4 H5.  rewrite H4.  simpl in |- *.  rewrite H.  cut (N.eqb node1 BDDzero = false).  cut (N.eqb node1 BDDone = false).
+  cut (N.eqb node2 BDDzero = false).  cut (N.eqb node2 BDDone = false).  intros H6 H7 H8 H9.
   rewrite H6; rewrite H7; rewrite H8; rewrite H9; rewrite H5; reflexivity.
   apply not_true_is_false.  unfold not in |- *.  intro H6.  cut (node2 = BDDone).  intro H7.
   inversion H2.  inversion H8.  inversion H9.  rewrite H7 in H10.  rewrite (config_OK_one cfg H0) in H10; discriminate.

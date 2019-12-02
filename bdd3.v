@@ -81,12 +81,12 @@ Lemma bool_fun_of_BDD_1_ext :
 Proof.
   simple induction bound.  intro cfg.  elim cfg.  clear cfg.  intros bs y.  elim y.  clear y.
   intros share counter.  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node). Focus 2.
-  elim (Neqb node BDDzero).  unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_zero in |- *; reflexivity.
+  elim (N.eqb node BDDzero).  unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_zero in |- *; reflexivity.
   unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_one in |- *; reflexivity.
   unfold bool_fun_ext in |- *.  unfold bool_fun_eval in |- *.  unfold bool_fun_zero in |- *.  intro a.
   intro vb.  intro vb'.  intro H.  elim a.  intros y y0.  elim y0.  reflexivity. intro n.
   intro H.  intro cfg.  elim cfg.  clear cfg.  intros bs y.  elim y.  clear y.  intros share counter.
-  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node).  Focus 2. elim (Neqb node BDDzero).
+  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node).  Focus 2. elim (N.eqb node BDDzero).
   unfold bool_fun_ext, bool_fun_zero in |- *.  unfold bool_fun_eval in |- *; reflexivity.  
   unfold bool_fun_ext, bool_fun_one in |- *.  unfold bool_fun_eval in |- *; reflexivity.  intros a.
   elim a.  intros y y0.  elim y0. intros y1 y2.  cut (bool_fun_ext (bool_fun_of_BDD_1 (bs, (share, counter)) y2 n)).
@@ -170,7 +170,7 @@ Lemma internal_node_lemma :
  forall (cfg : BDDconfig) (node : ad),
  BDDconfig_OK cfg ->
  is_internal_node cfg node ->
- Neqb (low cfg node) (high cfg node) = false /\
+ N.eqb (low cfg node) (high cfg node) = false /\
  BDDbounded (fst cfg) (low cfg node) (var cfg node) /\
  BDDbounded (fst cfg) (high cfg node) (var cfg node).
 Proof.
@@ -185,7 +185,7 @@ Proof.
           (exists r' : BDDvar,
              MapGet _ bs node = Some (x', (l', r')) /\
              BDDcompare x' (ad_S x) = Datatypes.Lt /\
-             Neqb l' r' = false /\
+             N.eqb l' r' = false /\
              BDDbounded bs l' x' /\ BDDbounded bs r' x')))).
   intros H9.  elim H9; intros.  rewrite H10 in H7; rewrite H3 in H7; discriminate.  
   elim H10; intros.  rewrite H11 in H7; rewrite (proj1 H4) in H7; discriminate.
@@ -244,7 +244,7 @@ Qed.
 Lemma low_high_neq :
  forall (cfg : BDDconfig) (node : ad),
  BDDconfig_OK cfg ->
- is_internal_node cfg node -> Neqb (low cfg node) (high cfg node) = false.
+ is_internal_node cfg node -> N.eqb (low cfg node) (high cfg node) = false.
 Proof.
   intros cfg node H H0.  exact (proj1 (internal_node_lemma cfg node H H0)).
 Qed.
@@ -284,8 +284,8 @@ Proof.
   unfold bool_fun_eval in H4, H5.  inversion H1.  inversion H6.  inversion H7.
   unfold var, high, low in |- *.  rewrite H8.  unfold augment at 1 4 in |- *.  cut (BDDvar_eq x x0 = false).
   intro H9.  rewrite H9.  unfold var, high, low in H5, H4.  rewrite H8 in H4.  rewrite H8 in H5.
-  rewrite (H4 vb).  rewrite (H5 vb).  reflexivity.  unfold BDDvar_eq in |- *.  cut (Neqb x x0 <> true).
-  elim (Neqb x x0).  intro H9.  absurd (true = true).  assumption.  reflexivity.  reflexivity.
+  rewrite (H4 vb).  rewrite (H5 vb).  reflexivity.  unfold BDDvar_eq in |- *.  cut (N.eqb x x0 <> true).
+  elim (N.eqb x x0).  intro H9.  absurd (true = true).  assumption.  reflexivity.  reflexivity.
   unfold not in |- *.  intro H9.  unfold var in H3.  rewrite H8 in H3.  cut (nat_of_N x0 < nat_of_N x).
   cut (x = x0).  intro H10.  rewrite H10.  exact (lt_irrefl (nat_of_N x0)).  apply Neqb_complete.
   assumption.  apply BDDcompare_lt.  assumption.  cut (node_OK bs (high (bs, (share, counter)) node)).
@@ -380,7 +380,7 @@ Proof.
       H0).
   unfold bool_fun_restrict in |- *.  unfold bool_fun_eval in |- *.  unfold bool_fun_eq in |- *.  unfold bool_fun_eval in |- *.
   unfold augment at 1 in |- *.  unfold BDDvar_eq in |- *.  cut
-   (Neqb (var (bs, (share, counter)) node) (var (bs, (share, counter)) node) =
+   (N.eqb (var (bs, (share, counter)) node) (var (bs, (share, counter)) node) =
     true).
   intro H1.  rewrite H1.  intro vb.  cut
    (bool_fun_of_BDD (bs, (share, counter)) (high (bs, (share, counter)) node)
@@ -412,7 +412,7 @@ Proof.
       H0).
   unfold bool_fun_restrict in |- *.  unfold bool_fun_eval in |- *.  unfold bool_fun_eq in |- *.  unfold bool_fun_eval in |- *.
   unfold augment at 1 in |- *.  unfold BDDvar_eq in |- *.  cut
-   (Neqb (var (bs, (share, counter)) node) (var (bs, (share, counter)) node) =
+   (N.eqb (var (bs, (share, counter)) node) (var (bs, (share, counter)) node) =
     true).
   intro H1.  rewrite H1.  intro vb.  cut
    (bool_fun_of_BDD (bs, (share, counter)) (low (bs, (share, counter)) node)
@@ -459,7 +459,7 @@ Proof.
   cut
    (config_node_OK (bs, (share, counter)) (low (bs, (share, counter)) node)).
   intros H6 H7.  elim H6.  intro H8.  elim H7.  intro H9.  cut
-   (Neqb (low (bs, (share, counter)) node)
+   (N.eqb (low (bs, (share, counter)) node)
       (high (bs, (share, counter)) node) = true).
 rewrite (low_high_neq (bs, (share, counter)) node H H1).
   intro H10.  discriminate H10.  rewrite H8.  rewrite H9.  apply Neqb_correct.  intro H9.
@@ -605,7 +605,7 @@ rewrite (low_high_neq (bs, (share, counter)) node H H1).
                 (var (bs, (share, counter)) node) true).
   apply bool_fun_restrict_eq.  assumption.  apply bool_fun_restrict_one.  elim H10; intro.
   cut
-   (Neqb (low (bs, (share, counter)) node)
+   (N.eqb (low (bs, (share, counter)) node)
       (high (bs, (share, counter)) node) = false).
   rewrite H9.  rewrite H11.  rewrite (Neqb_correct BDDone).  intro; discriminate.  
   apply low_high_neq.  assumption.  assumption.  cut
@@ -1004,7 +1004,7 @@ Proof.
    (config_node_OK (bs, (share, counter)) (low (bs, (share, counter)) node2)).  intros H10 H11 H12 H13.
   cut (low (bs, (share, counter)) node2 = high (bs, (share, counter)) node2).  intros H14.
   cut
-   (Neqb (low (bs, (share, counter)) node2)
+   (N.eqb (low (bs, (share, counter)) node2)
       (high (bs, (share, counter)) node2) = false).
   rewrite H14.  rewrite (Neqb_correct (high (bs, (share, counter)) node2)).  intro H15.
   discriminate H15.  apply low_high_neq.  assumption.  assumption.  cut
@@ -1130,7 +1130,7 @@ Proof.
    (config_node_OK (bs, (share, counter)) (low (bs, (share, counter)) node2)).
   intros H10 H11 H12 H13.  cut (low (bs, (share, counter)) node1 = high (bs, (share, counter)) node1).
   intros H14.  cut
-   (Neqb (low (bs, (share, counter)) node1)
+   (N.eqb (low (bs, (share, counter)) node1)
       (high (bs, (share, counter)) node1) = false).
   rewrite H14.  rewrite (Neqb_correct (high (bs, (share, counter)) node1)).  intro H15.
   discriminate H15.  apply low_high_neq.  assumption.  assumption.  cut

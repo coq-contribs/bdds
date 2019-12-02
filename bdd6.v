@@ -348,10 +348,10 @@ Proof.
   intros H4 H5.  cut (node_OK (fst cfg) l).  cut (node_OK (fst cfg) r).  intros H6 H7.
   cut
    (BDDconfig_OK (fst (BDDmake cfg x l r)) /\
-    (Neqb l r = false ->
+    (N.eqb l r = false ->
      MapGet _ (fst (fst (BDDmake cfg x l r))) (snd (BDDmake cfg x l r)) =
      Some (x, (l, r))) /\
-    (Neqb l r = true -> snd (BDDmake cfg x l r) = l) /\
+    (N.eqb l r = true -> snd (BDDmake cfg x l r) = l) /\
     (forall (a l' r' : ad) (x' : BDDvar),
      (MapGet _ (fst (fst (BDDmake cfg x l r))) a = Some (x', (l', r')) ->
       MapGet _ (fst cfg) a = Some (x', (l', r')) \/
@@ -360,7 +360,7 @@ Proof.
       MapGet _ (fst (fst (BDDmake cfg x l r))) a = Some (x', (l', r')))) /\
     node_OK (fst (fst (BDDmake cfg x l r))) (snd (BDDmake cfg x l r))).
   intros H8.  elim H8; clear H8; intros.  elim H9; clear H9; intros.  elim H10; clear H10; intros.
-  elim H11; clear H11; intros.  elim (sumbool_of_bool (Neqb l r)).  intro y.
+  elim H11; clear H11; intros.  elim (sumbool_of_bool (N.eqb l r)).  intro y.
   rewrite (H10 y).  unfold var in |- *.  elim (option_sum _ (MapGet _ (fst cfg) l)); intro y0.
   elim y0.  intro x0.  elim x0.  intro y1; intro y2.  elim y2.  intros y3 y4 y5.  rewrite (proj2 (H11 l y3 y4 y1) y5).
   rewrite y5 in H5.  cut (BDDcompare y1 x = Datatypes.Lt).  intro H13.  apply BDDvar_le_compare.
@@ -400,10 +400,10 @@ Proof.
   intros H4 H5.  cut (node_OK (fst cfg) l).  cut (node_OK (fst cfg) r).  intros H6 H7.
   cut
    (BDDconfig_OK (fst (BDDmake cfg x l r)) /\
-    (Neqb l r = false ->
+    (N.eqb l r = false ->
      MapGet _ (fst (fst (BDDmake cfg x l r))) (snd (BDDmake cfg x l r)) =
      Some (x, (l, r))) /\
-    (Neqb l r = true -> snd (BDDmake cfg x l r) = l) /\
+    (N.eqb l r = true -> snd (BDDmake cfg x l r) = l) /\
     (forall (a l' r' : ad) (x' : BDDvar),
      (MapGet _ (fst (fst (BDDmake cfg x l r))) a = Some (x', (l', r')) ->
       MapGet _ (fst cfg) a = Some (x', (l', r')) \/
@@ -412,7 +412,7 @@ Proof.
       MapGet _ (fst (fst (BDDmake cfg x l r))) a = Some (x', (l', r')))) /\
     node_OK (fst (fst (BDDmake cfg x l r))) (snd (BDDmake cfg x l r))).
   intros H8.  elim H8; clear H8; intros.  elim H9; clear H9; intros.  elim H10; clear H10; intros.
-  elim H11; clear H11; intros.  elim (sumbool_of_bool (Neqb l r)).  intro y.
+  elim H11; clear H11; intros.  elim (sumbool_of_bool (N.eqb l r)).  intro y.
   rewrite (H10 y).  apply bool_fun_eq_trans with (bf2 := bool_fun_of_BDD cfg l).
   apply bool_fun_preservation.  assumption.  assumption.  intros x0 l0 r0 a H13.  exact (proj2 (H11 a l0 r0 x0) H13).
   assumption.  cut (l = r).  intro H13.  rewrite <- H13.  unfold bool_fun_if in |- *.  unfold bool_fun_eq in |- *.
@@ -572,7 +572,7 @@ Definition BDDor_memo_OK (cfg : BDDconfig) (memo : BDDor_memo) :=
 Lemma BDDor_memo_lookup_semantics :
  forall (memo : BDDor_memo) (node1 node2 node node1' node2' : ad),
  BDDor_memo_lookup (BDDor_memo_put memo node1 node2 node) node1' node2' =
- (if Neqb node1 node1' && Neqb node2 node2'
+ (if N.eqb node1 node1' && N.eqb node2 node2'
   then Some node
   else BDDor_memo_lookup memo node1' node2').
 Proof.
@@ -583,14 +583,14 @@ Proof.
          | None => newMap ad
          | Some y => y
          end node2 node) node1').
-  elim (sumbool_of_bool (Neqb node1 node1')); intro y.  rewrite y.
+  elim (sumbool_of_bool (N.eqb node1 node1')); intro y.  rewrite y.
   rewrite
    (MapPut_semantics ad
       match MapGet (Map ad) memo node1 with
       | None => newMap ad
       | Some y => y
       end node2 node node2').
-  elim (sumbool_of_bool (Neqb node2 node2')).  intro y0.  rewrite y0.  simpl in |- *.
+  elim (sumbool_of_bool (N.eqb node2 node2')).  intro y0.  rewrite y0.  simpl in |- *.
   reflexivity.  intro y0.  rewrite y0.  simpl in |- *.  elim (option_sum _ (MapGet (Map ad) memo node1)).
   intro y1.  inversion y1.  rewrite H.  cut (node1 = node1').  intro H0.  rewrite <- H0.
   rewrite H.  reflexivity.  apply Neqb_complete; assumption.  intro y1.  rewrite y1.

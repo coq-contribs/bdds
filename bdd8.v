@@ -143,7 +143,7 @@ intros node1' node2' node.
 intros H7.
 rewrite (BDDor_memo_lookup_semantics memo BDDzero node2 node2 node1' node2')
   in H7.
-elim (sumbool_of_bool (Neqb BDDzero node1' && Neqb node2 node2')); intro y0.
+elim (sumbool_of_bool (N.eqb BDDzero node1' && N.eqb node2 node2')); intro y0.
 cut (BDDzero = node1').
 cut (node2 = node2').
 intros H8 H9.
@@ -177,10 +177,10 @@ assumption.
 
 
 apply Neqb_complete.
-exact (proj2 (andb_prop (Neqb BDDzero node1') (Neqb node2 node2') y0)).
+exact (proj2 (andb_prop (N.eqb BDDzero node1') (N.eqb node2 node2') y0)).
 
 apply Neqb_complete.
-exact (proj1 (andb_prop (Neqb BDDzero node1') (Neqb node2 node2') y0)).
+exact (proj1 (andb_prop (N.eqb BDDzero node1') (N.eqb node2 node2') y0)).
 
 rewrite y0 in H7.
 unfold BDDor_memo_OK in H1.
@@ -241,7 +241,7 @@ intros node1' node2' node.
 intros H7.
 rewrite (BDDor_memo_lookup_semantics memo BDDone node2 BDDone node1' node2')
   in H7.
-elim (sumbool_of_bool (Neqb BDDone node1' && Neqb node2 node2')); intro y0.
+elim (sumbool_of_bool (N.eqb BDDone node1' && N.eqb node2 node2')); intro y0.
 cut (BDDone = node1').
 cut (node2 = node2').
 intros H8 H9.
@@ -280,10 +280,10 @@ rewrite <- H8.
 assumption.
 
 apply Neqb_complete.
-exact (proj2 (andb_prop (Neqb BDDone node1') (Neqb node2 node2') y0)).
+exact (proj2 (andb_prop (N.eqb BDDone node1') (N.eqb node2 node2') y0)).
 
 apply Neqb_complete.
-exact (proj1 (andb_prop (Neqb BDDone node1') (Neqb node2 node2') y0)).
+exact (proj1 (andb_prop (N.eqb BDDone node1') (N.eqb node2 node2') y0)).
 
 rewrite y0 in H7.
 unfold BDDor_memo_OK in H1.
@@ -346,7 +346,7 @@ intros node1' node2' node.
 intros H8.
 rewrite (BDDor_memo_lookup_semantics memo node1 BDDzero node1 node1' node2')
   in H8.
-elim (sumbool_of_bool (Neqb node1 node1' && Neqb BDDzero node2')); intro y0.
+elim (sumbool_of_bool (N.eqb node1 node1' && N.eqb BDDzero node2')); intro y0.
 cut (node1 = node1').
 cut (BDDzero = node2').
 intros H9 H10.
@@ -383,10 +383,10 @@ rewrite <- H11.
 assumption.
 
 apply Neqb_complete.
-exact (proj2 (andb_prop (Neqb node1 node1') (Neqb BDDzero node2') y0)).
+exact (proj2 (andb_prop (N.eqb node1 node1') (N.eqb BDDzero node2') y0)).
 
 apply Neqb_complete.
-exact (proj1 (andb_prop (Neqb node1 node1') (Neqb BDDzero node2') y0)).
+exact (proj1 (andb_prop (N.eqb node1 node1') (N.eqb BDDzero node2') y0)).
 
 rewrite y0 in H8.
 unfold BDDor_memo_OK in H1.
@@ -448,7 +448,7 @@ intros node1' node2' node.
 intros H7.
 rewrite (BDDor_memo_lookup_semantics memo node1 BDDone BDDone node1' node2')
   in H7.
-elim (sumbool_of_bool (Neqb node1 node1' && Neqb BDDone node2')); intro y0.
+elim (sumbool_of_bool (N.eqb node1 node1' && N.eqb BDDone node2')); intro y0.
 cut (node1 = node1').
 cut (BDDone = node2').
 intros H8 H9.
@@ -489,10 +489,10 @@ rewrite <- H8.
 assumption.
 
 apply Neqb_complete.
-exact (proj2 (andb_prop (Neqb node1 node1') (Neqb BDDone node2') y0)).
+exact (proj2 (andb_prop (N.eqb node1 node1') (N.eqb BDDone node2') y0)).
 
 apply Neqb_complete.
-exact (proj1 (andb_prop (Neqb node1 node1') (Neqb BDDone node2') y0)).
+exact (proj1 (andb_prop (N.eqb node1 node1') (N.eqb BDDone node2') y0)).
 
 rewrite y0 in H7.
 unfold BDDor_memo_OK in H1.

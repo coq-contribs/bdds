@@ -332,7 +332,7 @@ cut
                          (BDDor_1 cfg memo (low cfg node1) 
                             (low cfg node2) bound'))) 
                    (high cfg node1) (high cfg node2) bound'))))) /\
-  (Neqb
+  (N.eqb
      (fst (snd (BDDor_1 cfg memo (low cfg node1) (low cfg node2) bound')))
      (fst
         (snd
@@ -407,7 +407,7 @@ cut
                 (snd
                    (BDDor_1 cfg memo (low cfg node1) (low cfg node2) bound')))
              (high cfg node1) (high cfg node2) bound'))))) /\
-  (Neqb
+  (N.eqb
      (fst (snd (BDDor_1 cfg memo (low cfg node1) (low cfg node2) bound')))
      (fst
         (snd
@@ -687,7 +687,7 @@ rewrite
                             (low cfg node2) bound'))) 
                    (high cfg node1) (high cfg node2) bound'))))) node1'
     node2').
-elim (sumbool_of_bool (Neqb node1 node1' && Neqb node2 node2')); intro y2.
+elim (sumbool_of_bool (N.eqb node1 node1' && N.eqb node2 node2')); intro y2.
 cut (node1 = node1').
 cut (node2 = node2').
 intro H45.
@@ -896,10 +896,10 @@ rewrite
 assumption.
 
 apply Neqb_complete.
-exact (proj2 (andb_prop (Neqb node1 node1') (Neqb node2 node2') y2)).
+exact (proj2 (andb_prop (N.eqb node1 node1') (N.eqb node2 node2') y2)).
 
 apply Neqb_complete.
-exact (proj1 (andb_prop (Neqb node1 node1') (Neqb node2 node2') y2)).
+exact (proj1 (andb_prop (N.eqb node1 node1') (N.eqb node2 node2') y2)).
 
 rewrite y2.
 split.

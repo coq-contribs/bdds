@@ -211,7 +211,7 @@ Proof.
             (fst (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0))
             x (snd (BDDneg_2 (bs, (share, counter)) l n0))
             (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)))) /\
-    (Neqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
+    (N.eqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
        (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)) =
      false ->
      MapGet _
@@ -235,7 +235,7 @@ Proof.
        (x,
        (snd (BDDneg_2 (bs, (share, counter)) l n0),
        snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)))) /\
-    (Neqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
+    (N.eqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
        (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)) =
      true ->
      snd
@@ -371,7 +371,7 @@ Proof.
          (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)))
       (bool_fun_neg (bool_fun_of_BDD (bs, (share, counter)) r))).
   intro H33.  cut
-   (Neqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
+   (N.eqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
       (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)) =
     false).
   intro H34.  cut
@@ -416,11 +416,11 @@ Proof.
   split
    with (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)). 
   assumption.  apply H25.  assumption.  cut
-   (Neqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
+   (N.eqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
       (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)) <>
     true).
   elim
-   (Neqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
+   (N.eqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
       (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0))).
   unfold not in |- *.  intro H34.  cut False.  tauto.  apply H34.  reflexivity.  
   intro H34.  reflexivity.  unfold not in |- *.  intro H34.  cut
@@ -432,7 +432,7 @@ Proof.
   intro H36.  cut
    (bool_fun_eq (bool_fun_of_BDD (bs, (share, counter)) r)
       (bool_fun_of_BDD (bs, (share, counter)) l)).
-  intro H37.  cut (r = l).  intro H38.  cut (Neqb l r = true).  intro H39.  elim H1.  intros H40 H41.
+  intro H37.  cut (r = l).  intro H38.  cut (N.eqb l r = true).  intro H39.  elim H1.  intros H40 H41.
   elim H40.  intros H42 H43.  elim H43.  intros H44 H45.  cut (BDD_OK bs node).  unfold BDD_OK in |- *. 
   unfold BDDordered in |- *.  rewrite y.  intro H46.  cut
    (node = BDDzero \/
@@ -442,7 +442,7 @@ Proof.
           (exists r0 : BDDvar,
              MapGet _ bs node = Some (x0, (l0, r0)) /\
              BDDcompare x0 (ad_S x) = Datatypes.Lt /\
-             Neqb l0 r0 = false /\
+             N.eqb l0 r0 = false /\
              BDDbounded bs l0 x0 /\ BDDbounded bs r0 x0)))).
   intro H47.  elim H47.  intro H48.  rewrite H48 in y.  rewrite y in H42.
   discriminate H42.  clear H47; intro.  elim H47.  clear H47.  intro H47.
@@ -500,7 +500,7 @@ Proof.
   apply bool_fun_preservation.  assumption.  assumption.  assumption.  assumption.
   assumption.  assumption.  intro H30.  elim
    (sumbool_of_bool
-      (Neqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
+      (N.eqb (snd (BDDneg_2 (bs, (share, counter)) l n0))
          (snd (BDDneg_2 (fst (BDDneg_2 (bs, (share, counter)) l n0)) r n0)))).
   intro y0.  cut
    (snd (BDDneg_2 (bs, (share, counter)) l n0) =
@@ -516,7 +516,7 @@ Proof.
       (bool_fun_of_BDD (fst (BDDneg_2 (bs, (share, counter)) l n0))
          (snd (BDDneg_2 (bs, (share, counter)) l n0)))
       (bool_fun_neg (bool_fun_of_BDD (bs, (share, counter)) r))).
-  intro H33.  cut (Neqb l r = true).  intro H34.  elim H1.  intros H35 H36.  elim H35; intros. 
+  intro H33.  cut (N.eqb l r = true).  intro H34.  elim H1.  intros H35 H36.  elim H35; intros. 
   elim H38; intros.  cut (BDD_OK bs node).  unfold BDD_OK in |- *.  unfold BDDordered in |- *.
   rewrite y.  intro H41.  cut
    (node = BDDzero \/
@@ -526,7 +526,7 @@ Proof.
           (exists r0 : BDDvar,
              MapGet _ bs node = Some (x0, (l0, r0)) /\
              BDDcompare x0 (ad_S x) = Datatypes.Lt /\
-             Neqb l0 r0 = false /\
+             N.eqb l0 r0 = false /\
              BDDbounded bs l0 x0 /\ BDDbounded bs r0 x0)))).
   intro H42.  elim H42; intros.  rewrite H43 in y; rewrite y in H37; discriminate.
   elim H43.  intro H44.  rewrite H44 in y; rewrite y in H39; discriminate.  intro H44.
@@ -769,7 +769,7 @@ Proof.
           (exists r0 : BDDvar,
              MapGet _ bs node = Some (x0, (l0, r0)) /\
              BDDcompare x0 (ad_S x) = Datatypes.Lt /\
-             Neqb l0 r0 = false /\
+             N.eqb l0 r0 = false /\
              BDDbounded bs l0 x0 /\ BDDbounded bs r0 x0)))).
   intro H10.  elim H10; intro.  rewrite H11 in y; rewrite y in H7; discriminate.
   elim H11; intro.  rewrite H12 in y; rewrite (proj1 H8) in y; discriminate.  
@@ -786,7 +786,7 @@ Proof.
           (exists r0 : BDDvar,
              MapGet _ bs node = Some (x0, (l0, r0)) /\
              BDDcompare x0 (ad_S x) = Datatypes.Lt /\
-             Neqb l0 r0 = false /\
+             N.eqb l0 r0 = false /\
              BDDbounded bs l0 x0 /\ BDDbounded bs r0 x0)))).
   intro H10.  elim H10; intro.  rewrite H11 in y; rewrite y in H7; discriminate.
   elim H11; intro.  rewrite H12 in y; rewrite (proj1 H8) in y; discriminate.  

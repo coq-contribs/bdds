@@ -39,7 +39,7 @@ Require Import bdd10.
 Require Import bdd11.
 
 Definition is_tauto (be : bool_expr) :=
-  Neqb BDDone
+  N.eqb BDDone
     (fst
        (snd (BDDof_bool_expr initBDDconfig initBDDneg_memo initBDDor_memo be))).
 

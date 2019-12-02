@@ -47,7 +47,7 @@ Fixpoint BDDneg_1 (arg : BDDconfig * ad * BDDneg_memo)
   | None =>
       match MapGet _ (fst (fst (fst arg))) (snd (fst arg)) with
       | None =>
-          if Neqb (snd (fst arg)) BDDzero
+          if N.eqb (snd (fst arg)) BDDzero
           then
            (fst (fst arg), BDDone, BDDneg_memo_put (snd arg) BDDzero BDDone)
           else
@@ -126,7 +126,7 @@ Lemma BDDneg_1_lemma_2 :
  BDDneg_memo_lookup (snd arg) (snd (fst arg)) = None ->
  MapGet _ (fst (fst (fst arg))) (snd (fst arg)) = None ->
  BDDneg_1 arg bound =
- (if Neqb (snd (fst arg)) BDDzero
+ (if N.eqb (snd (fst arg)) BDDzero
   then (fst (fst arg), BDDone, BDDneg_memo_put (snd arg) BDDzero BDDone)
   else (fst (fst arg), BDDzero, BDDneg_memo_put (snd arg) BDDone BDDzero)).
 Proof.
@@ -329,9 +329,9 @@ Proof.
   intros n H.  intro cfg.  elim cfg; clear cfg; intros bs y; elim y; clear y; intros share counter.
   intros node node' H0 H1 H2 H3 H4.  elim H1; intro.  cut (node' = BDDone).  intro H6.  rewrite H5.  rewrite H6.
   elim n.  unfold BDDneg_2 in |- *.  rewrite (config_OK_zero (bs, (share, counter)) H0).  
-  cut (Neqb BDDzero BDDzero = true).  intro H7.  rewrite H7.  reflexivity.  apply Neqb_correct.
+  cut (N.eqb BDDzero BDDzero = true).  intro H7.  rewrite H7.  reflexivity.  apply Neqb_correct.
   intros n0 H7.  unfold BDDneg_2 in |- *.  fold BDDneg_2 in |- *.  rewrite (config_OK_zero (bs, (share, counter)) H0).
-  cut (Neqb BDDzero BDDzero = true).  intro H8.  rewrite H8.  reflexivity.  apply Neqb_correct.
+  cut (N.eqb BDDzero BDDzero = true).  intro H8.  rewrite H8.  reflexivity.  apply Neqb_correct.
   rewrite H5 in H4.  rewrite (proj1 (bool_fun_of_BDD_semantics (bs, (share, counter)) H0)) in H4.
   rewrite bool_fun_neg_zero in H4.  rewrite <-
    (proj1 (proj2 (bool_fun_of_BDD_semantics (bs, (share, counter)) H0)))
@@ -339,9 +339,9 @@ Proof.
   apply BDDunique with (cfg := (bs, (share, counter))).  assumption.  assumption.  right; left; reflexivity.
   assumption.  elim H5; clear H5; intro.  cut (node' = BDDzero).  intro H6.  rewrite H5.
   rewrite H6.  elim n.  unfold BDDneg_2 in |- *.  rewrite (config_OK_one (bs, (share, counter)) H0).
-  cut (Neqb BDDone BDDzero = false).  intro H7.  rewrite H7.  reflexivity.  simpl in |- *.
+  cut (N.eqb BDDone BDDzero = false).  intro H7.  rewrite H7.  reflexivity.  simpl in |- *.
   reflexivity.  intros n0 H7.  unfold BDDneg_2 in |- *.  fold BDDneg_2 in |- *.  rewrite (config_OK_one (bs, (share, counter)) H0).
-  cut (Neqb BDDone BDDzero = false).  intro H8.  rewrite H8.  reflexivity.  reflexivity.
+  cut (N.eqb BDDone BDDzero = false).  intro H8.  rewrite H8.  reflexivity.  reflexivity.
   rewrite H5 in H4.  rewrite
    (proj1 (proj2 (bool_fun_of_BDD_semantics (bs, (share, counter)) H0)))
     in H4.
@@ -354,7 +354,7 @@ Proof.
   intro H11.  inversion H11.  inversion H12.  inversion H13.  clear H8 H9 H12 H13.
   cut (BDDneg_2 (bs, (share, counter)) x0 m = (bs, (share, counter), x3)).  intro H8.  rewrite H8.
   simpl in |- *.  cut (BDDneg_2 (bs, (share, counter)) x1 m = (bs, (share, counter), x4)).  intro H9.
-  rewrite H9.  simpl in |- *.  unfold BDDmake in |- *.  simpl in |- *.  cut (Neqb x3 x4 = false).  intro H12.
+  rewrite H9.  simpl in |- *.  unfold BDDmake in |- *.  simpl in |- *.  cut (N.eqb x3 x4 = false).  intro H12.
   rewrite H12.  elim H0.  intros H13 H15.  unfold BDDsharing_OK in H15.  cut (x = x2).  intro H16.
   rewrite H16.  rewrite (proj2 (proj1 H15 x2 x3 x4 node') H14).  reflexivity.
   cut (x = var (bs, (share, counter)) node).  cut (x2 = var (bs, (share, counter)) node').
@@ -508,11 +508,11 @@ Lemma BDDmake_preserves_nodes :
  BDDconfig_OK cfg -> nodes_preserved cfg (fst (BDDmake cfg x l r)).
 Proof.
   intro cfg.  elim cfg; clear cfg.  intros bs y.  elim y; clear y; intros share counter.
-  intros x l r H00.  unfold nodes_preserved in |- *.  unfold BDDmake in |- *.  elim (sumbool_of_bool (Neqb l r)).
+  intros x l r H00.  unfold nodes_preserved in |- *.  unfold BDDmake in |- *.  elim (sumbool_of_bool (N.eqb l r)).
   intro y.  rewrite y.  simpl in |- *.  intros; assumption.  intro y.  rewrite y.  simpl in |- *.
   elim (option_sum _ (BDDshare_lookup share x l r)).  intro y0.  inversion y0.  rewrite H.
   simpl in |- *.  intros x1 l0 r0 node H0.  assumption.  intro y0.  rewrite y0.  simpl in |- *.  elim H00.  intros H H0 x0 l0 r0 node H1.
-  rewrite (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) node).  elim (sumbool_of_bool (Neqb counter node)).  intro y1.  absurd (counter = node).  unfold not in |- *; intro.  cut (MapGet (BDDvar * (ad * ad)) bs node = None).
+  rewrite (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) node).  elim (sumbool_of_bool (N.eqb counter node)).  intro y1.  absurd (counter = node).  unfold not in |- *; intro.  cut (MapGet (BDDvar * (ad * ad)) bs node = None).
   intro H3.  rewrite H1 in H3; discriminate.  apply (proj1 (proj2 H0)).
   rewrite H2.  unfold Nleb in |- *.  apply leb_correct.  apply le_n.  apply Neqb_complete.
   assumption.  intro y1.  rewrite y1.  assumption.  

@@ -53,7 +53,7 @@ Fixpoint BDDneg_1_1 (cfg : BDDconfig) (memo : BDDneg_memo)
   | None =>
       match MapGet _ (fst cfg) node with
       | None =>
-          if Neqb node BDDzero
+          if N.eqb node BDDzero
           then (cfg, BDDone, BDDneg_memo_put memo BDDzero BDDone)
           else (cfg, BDDzero, BDDneg_memo_put memo BDDone BDDzero)
       | Some (x, (l, r)) =>
@@ -94,16 +94,16 @@ Fixpoint BDDor_1_1 (cfg : BDDconfig) (memo : BDDor_memo)
   match BDDor_memo_lookup memo node1 node2 with
   | Some node => (cfg, (node, memo))
   | None =>
-      if Neqb node1 BDDzero
+      if N.eqb node1 BDDzero
       then (cfg, (node2, BDDor_memo_put memo BDDzero node2 node2))
       else
-       if Neqb node1 BDDone
+       if N.eqb node1 BDDone
        then (cfg, (BDDone, BDDor_memo_put memo BDDone node2 BDDone))
        else
-        if Neqb node2 BDDzero
+        if N.eqb node2 BDDzero
         then (cfg, (node1, BDDor_memo_put memo node1 BDDzero node1))
         else
-         if Neqb node2 BDDone
+         if N.eqb node2 BDDone
          then (cfg, (BDDone, BDDor_memo_put memo node1 BDDone BDDone))
          else
           match bound with

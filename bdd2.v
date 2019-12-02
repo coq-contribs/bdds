@@ -71,7 +71,7 @@ Proof.
           (exists r0 : BDDvar,
              MapGet _ bs node = Some (x0, (l0, r0)) /\
              BDDcompare x0 (ad_S x) = Datatypes.Lt /\
-             Neqb l0 r0 = false /\
+             N.eqb l0 r0 = false /\
              BDDbounded bs l0 x0 /\ BDDbounded bs r0 x0)))).
   intros H10.  elim H10.  intro H11.  rewrite H11 in H4.  rewrite H4 in H3.
   discriminate H3.  intro H11.  elim H11.  intro H12.  rewrite H12 in H4.
@@ -88,7 +88,7 @@ Proof.
           (exists rl : BDDvar,
              MapGet _ bs l = Some (xl, (ll, rl)) /\
              BDDcompare xl x = Datatypes.Lt /\
-             Neqb ll rl = false /\
+             N.eqb ll rl = false /\
              BDDbounded bs ll xl /\ BDDbounded bs rl xl)))).
   intros H13.  elim H13.  intro H16.  rewrite H16 in H5.  rewrite H5 in H3.
   discriminate H3.  intro H16.  elim H16.  intro H17.  rewrite H17 in H5.
@@ -124,7 +124,7 @@ Proof.
           (exists r0 : BDDvar,
              MapGet _ bs node = Some (x0, (l0, r0)) /\
              BDDcompare x0 (ad_S x) = Datatypes.Lt /\
-             Neqb l0 r0 = false /\
+             N.eqb l0 r0 = false /\
              BDDbounded bs l0 x0 /\ BDDbounded bs r0 x0)))).
   intros H10.  elim H10.  intro H11.  rewrite H11 in H4.  rewrite H4 in H3.
   discriminate H3.  intro H11.  elim H11.  intro H12.  rewrite H12 in H4.
@@ -141,7 +141,7 @@ Proof.
           (exists rr : BDDvar,
              MapGet _ bs r = Some (xr, (lr, rr)) /\
              BDDcompare xr x = Datatypes.Lt /\
-             Neqb lr rr = false /\
+             N.eqb lr rr = false /\
              BDDbounded bs lr xr /\ BDDbounded bs rr xr)))).
   intros H13.  elim H13.  intro H16.  rewrite H16 in H5.  rewrite H5 in H3.
   discriminate H3.  intro H16.  elim H16.  intro H17.  rewrite H17 in H5.
@@ -171,7 +171,7 @@ Definition bool_fun_one (vb : var_binding) := true.
 Fixpoint bool_fun_of_BDD_1 (cfg : BDDconfig) (node : ad) 
  (bound : nat) {struct bound} : bool_fun :=
   match MapGet _ (fst cfg) node with
-  | None => if Neqb node BDDzero then bool_fun_zero else bool_fun_one
+  | None => if N.eqb node BDDzero then bool_fun_zero else bool_fun_one
   | Some (x, (l, r)) =>
       match bound with
       | O => (* Error *)  bool_fun_zero
@@ -569,7 +569,7 @@ Definition BDDneg_memo_OK (cfg : BDDconfig) (memo : BDDneg_memo) :=
 Fixpoint BDDneg_2 (cfg : BDDconfig) (node : ad) (bound : nat) {struct bound} 
    : BDDconfig * ad :=
   match MapGet _ (fst cfg) node with
-  | None => if Neqb node BDDzero then (cfg, BDDone) else (cfg, BDDzero)
+  | None => if N.eqb node BDDzero then (cfg, BDDone) else (cfg, BDDzero)
   | Some (x, (l, r)) =>
       match bound with
       | O => (* Error *)  (initBDDconfig, BDDzero)

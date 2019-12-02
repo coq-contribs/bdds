@@ -34,12 +34,12 @@ Definition BDDone := Npos 1.
     | Npos p1, Npos p2 => Pcompare p1 p2 Datatypes.Eq
     end.
 
-Definition BDDvar_eq := Neqb.
+Definition BDDvar_eq := N.eqb.
 
   Definition ad_S (a : ad) :=
     match a with
     | N0 => Npos 1
-    | Npos p => Npos (Psucc p)
+    | Npos p => Npos (Pos.succ p)
     end.
 
   Lemma ad_S_is_S : forall a : ad, nat_of_N (ad_S a) = S (nat_of_N a).
@@ -100,24 +100,24 @@ Qed.
   Qed.
 
   Lemma ad_S_le_then_neq :
-   forall x y : ad, Nleb (ad_S x) y = true -> Neqb x y = false.
+   forall x y : ad, Nleb (ad_S x) y = true -> N.eqb x y = false.
   Proof.
-    intros x y H.  cut (Neqb x y = true \/ Neqb x y = false).  intro H0.  elim H0.
+    intros x y H.  cut (N.eqb x y = true \/ N.eqb x y = false).  intro H0.  elim H0.
     clear H0.  intro H0.  cut (x = y).  intro H1.  rewrite H1 in H.  unfold Nleb in H.
     rewrite (ad_S_is_S y) in H.
     cut (leb (S (nat_of_N y)) (nat_of_N y) = false).  rewrite H.  intro H2.
     discriminate H2.  cut (nat_of_N y < S (nat_of_N y)).  intro H2.
     apply leb_correct_conv.  assumption.  unfold lt in |- *.  trivial.
-    apply Neqb_complete.  assumption.  trivial. elim (Neqb x y). auto. auto.
+    apply Neqb_complete.  assumption.  trivial. elim (N.eqb x y). auto. auto.
   Qed.
 
   Lemma BDDcompare_succ :
    forall a : BDDvar, BDDcompare a (ad_S a) = Datatypes.Lt.
   Proof.
     simple induction a.  simpl in |- *.  trivial.  simpl in |- *.  intro p.
-    cut (nat_of_P p < nat_of_P (Psucc p)).  intro H.
+    cut (nat_of_P p < nat_of_P (Pos.succ p)).  intro H.
     apply nat_of_P_lt_Lt_compare_complement_morphism.  assumption.
-    cut (nat_of_P (Psucc p) = 1 + nat_of_P p).  intro H.  rewrite H.
+    cut (nat_of_P (Pos.succ p) = 1 + nat_of_P p).  intro H.  rewrite H.
     simpl in |- *.  unfold lt in |- *.  trivial.  unfold nat_of_P in |- *.  apply Pmult_nat_succ_morphism.
   Qed.
 

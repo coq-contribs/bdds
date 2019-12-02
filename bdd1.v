@@ -38,7 +38,7 @@ Require Import BDDvar_ad_nat.
         forall (node : ad) (n x : BDDvar) (l r : ad),
         MapGet _ bs node = Some (x, (l, r)) ->
         BDDcompare x n = Datatypes.Lt ->
-        Neqb l r = false ->
+        N.eqb l r = false ->
         BDDbounded bs l x -> BDDbounded bs r x -> BDDbounded bs node n.
 
   Lemma BDDbounded_lemma :
@@ -51,7 +51,7 @@ Require Import BDDvar_ad_nat.
          (exists r : BDDvar,
             MapGet _ bs node = Some (x, (l, r)) /\
             BDDcompare x n = Datatypes.Lt /\
-            Neqb l r = false /\ BDDbounded bs l x /\ BDDbounded bs r x))).
+            N.eqb l r = false /\ BDDbounded bs l x /\ BDDbounded bs r x))).
   Proof.
     intro bs.  intro node.  intro n.  intro H.  elim H.  intros n0.  left.  trivial.  intros n0.
     right.  left.  trivial.  intros node0 n0 x l r H0 H1 H2 H3 H4 H5 H6.  right.  right.  split with x.
@@ -153,11 +153,11 @@ Require Import BDDvar_ad_nat.
      (MapPut_semantics _ share l
         (MapPut (Map ad) x0 r (MapPut ad x1 x counter)) l)
      .
-    cut (Neqb l l = true).  intros H.  rewrite H.
+    cut (N.eqb l l = true).  intros H.  rewrite H.
     rewrite (MapPut_semantics _ x0 r (MapPut ad x1 x counter) r).
-    cut (Neqb r r = true).  intros H0.  rewrite H0.
+    cut (N.eqb r r = true).  intros H0.  rewrite H0.
     rewrite (MapPut_semantics _ x1 x counter x).
-    cut (Neqb x x = true).  intros H1.  rewrite H1.  trivial.
+    cut (N.eqb x x = true).  intros H1.  rewrite H1.  trivial.
     apply Neqb_correct.  apply Neqb_correct.  apply Neqb_correct.  intros y0.
     rewrite y0.  unfold BDDshare_lookup in |- *.
     rewrite
@@ -197,25 +197,25 @@ Require Import BDDvar_ad_nat.
      (MapPut_semantics (Map (Map ad)) share l
         (MapPut (Map ad) x0 r (MapPut ad x1 x counter)) l')
       in H.
-    cut (Neqb l l' = true \/ Neqb l l' = false).  intro H0.  elim H0.  clear H0.
+    cut (N.eqb l l' = true \/ N.eqb l l' = false).  intro H0.  elim H0.  clear H0.
     intro H0.  rewrite H0 in H.
     rewrite (MapPut_semantics (Map ad) x0 r (MapPut ad x1 x counter) r') in H.
-    cut (Neqb r r' = true \/ Neqb r r' = false).  intro H1.  elim H1.  clear H1.
+    cut (N.eqb r r' = true \/ N.eqb r r' = false).  intro H1.  elim H1.  clear H1.
     intro H1.  rewrite H1 in H.
     rewrite (MapPut_semantics ad x1 x counter x') in H.
-    cut (Neqb x x' = true \/ Neqb x x' = false).  intro H2.  elim H2.  clear H2.
+    cut (N.eqb x x' = true \/ N.eqb x x' = false).  intro H2.  elim H2.  clear H2.
     intro H2.  rewrite H2 in H.  right.  cut (x = x').  cut (l = l').  cut (r = r').  intros H3 H4 H5.
     rewrite H3.  rewrite H4.  rewrite H5.  trivial.  apply Neqb_complete.
     assumption.  apply Neqb_complete.  assumption.  apply Neqb_complete.
     assumption.  intro H3.  rewrite H3 in H.  cut (l = l').  intro H4.  cut (r = r').
     intro H5.  rewrite <- H4.  rewrite <- H5.  rewrite y.  rewrite y0.  left.
     assumption.  apply Neqb_complete.  assumption.  apply Neqb_complete.
-    assumption.  elim (Neqb x x').  auto.  auto.  intro H2.  rewrite H2 in H.
+    assumption.  elim (N.eqb x x').  auto.  auto.  intro H2.  rewrite H2 in H.
     cut (l = l').  intro H3.  rewrite <- H3.  rewrite y.  left.  assumption.
-    apply Neqb_complete.  assumption.  elim (Neqb r r').  auto.  auto.
-    intro H1.  rewrite H1 in H.  left.  assumption.  elim (Neqb l l').  auto.  
+    apply Neqb_complete.  assumption.  elim (N.eqb r r').  auto.  auto.
+    intro H1.  rewrite H1 in H.  left.  assumption.  elim (N.eqb l l').  auto.  
     auto.  intro y0.  unfold BDDshare_lookup in |- *.  unfold BDDshare_lookup in H.
-    rewrite y0 in H.  cut (Neqb l l' = true \/ Neqb l l' = false).  intro H0.
+    rewrite y0 in H.  cut (N.eqb l l' = true \/ N.eqb l l' = false).  intro H0.
     elim H0.  clear H0.  intro H0.
     rewrite
      (MapPut_semantics (Map (Map ad)) share l
@@ -225,23 +225,23 @@ Require Import BDDvar_ad_nat.
     rewrite
      (MapPut_semantics (Map ad) x0 r (MapPut ad (newMap ad) x counter) r')
       in H.
-    cut (Neqb r r' = true \/ Neqb r r' = false).  intro H1.  elim H1.  clear H1.
+    cut (N.eqb r r' = true \/ N.eqb r r' = false).  intro H1.  elim H1.  clear H1.
     intros H1.  rewrite H1 in H.  cut (l = l').  cut (r = r').  intros H2 H3.  rewrite <- H2.
     rewrite <- H3.  rewrite y.  rewrite y0.
-    cut (Neqb x x' = true \/ Neqb x x' = false).  intro H4.  elim H4.  clear H4.
+    cut (N.eqb x x' = true \/ N.eqb x x' = false).  intro H4.  elim H4.  clear H4.
     intro H4.  cut (x = x').  intro H5.  rewrite <- H5.  auto.  apply Neqb_complete.
     assumption.  intro H5.  left.
     rewrite (MapPut_semantics ad (newMap ad) x counter x') in H.
-    rewrite H5 in H.  simpl in H.  assumption.  elim (Neqb x x').  auto.
+    rewrite H5 in H.  simpl in H.  assumption.  elim (N.eqb x x').  auto.
     auto.  apply Neqb_complete.  assumption.  apply Neqb_complete.
     assumption.  intro H2.  rewrite H2 in H.  cut (l = l').  intro H3.  rewrite <- H3.
-    rewrite y.  auto.  apply Neqb_complete.  assumption.  elim (Neqb r r').
+    rewrite y.  auto.  apply Neqb_complete.  assumption.  elim (N.eqb r r').
     auto.  auto.  intro H1.
     rewrite
      (MapPut_semantics (Map (Map ad)) share l
         (MapPut (Map ad) x0 r (MapPut ad (newMap ad) x counter)) l')
       in H.
-    rewrite H1 in H.  auto.  elim (Neqb l l').  auto.  auto.  intro y.
+    rewrite H1 in H.  auto.  elim (N.eqb l l').  auto.  auto.  intro y.
     unfold BDDshare_lookup in |- *.  rewrite y.
     rewrite
      (MapPut_semantics (Map (Map ad)) share l
@@ -251,9 +251,9 @@ Require Import BDDvar_ad_nat.
               | None => newMap ad
               | Some y => y
               end x counter)) l').
-    cut (Neqb l l' = true \/ Neqb l l' = false).
-    cut (Neqb x x' = true \/ Neqb x x' = false).
-    cut (Neqb r r' = true \/ Neqb r r' = false).
+    cut (N.eqb l l' = true \/ N.eqb l l' = false).
+    cut (N.eqb x x' = true \/ N.eqb x x' = false).
+    cut (N.eqb r r' = true \/ N.eqb r r' = false).
     intros H H0 H1 H2.  elim H1.  clear H1.  intro H1.  rewrite H1 in H2.
     rewrite
      (MapPut_semantics (Map ad) (newMap (Map ad)) r
@@ -268,8 +268,8 @@ Require Import BDDvar_ad_nat.
     apply Neqb_complete.  assumption.  apply Neqb_complete.  assumption.
     intro H3.  rewrite H3 in H2.  discriminate H2.  intro H3.  rewrite H3 in H2.
     simpl in H2.  discriminate H2.  intro H3.  rewrite H3 in H2.  auto.
-    elim (Neqb r r').  auto.  auto.  elim (Neqb x x').  auto.  auto.
-    elim (Neqb l l').  auto.  auto.
+    elim (N.eqb r r').  auto.  auto.  elim (N.eqb x x').  auto.  auto.
+    elim (N.eqb l l').  auto.  auto.
   Qed.
 
   Lemma BDDshare_put_preserves_nodes :
@@ -280,10 +280,10 @@ Require Import BDDvar_ad_nat.
    BDDshare_lookup (BDDshare_put share x l r counter) x' l' r' =
    Some counter'.
   Proof.
-    intros share x x' l l' r r' counter counter' H H0.  cut (Neqb l l' = true \/ Neqb l l' = false).
-    cut (Neqb r r' = true \/ Neqb r r' = false).
-    cut (Neqb x x' = true \/ Neqb x x' = false).  intros H1 H2 H3.
-    cut (Neqb x x' = false \/ Neqb l l' = false \/ Neqb r r' = false).  intro H4.
+    intros share x x' l l' r r' counter counter' H H0.  cut (N.eqb l l' = true \/ N.eqb l l' = false).
+    cut (N.eqb r r' = true \/ N.eqb r r' = false).
+    cut (N.eqb x x' = true \/ N.eqb x x' = false).  intros H1 H2 H3.
+    cut (N.eqb x x' = false \/ N.eqb l l' = false \/ N.eqb r r' = false).  intro H4.
     unfold BDDshare_lookup in |- *.  unfold BDDshare_lookup in H.
     unfold BDDshare_put in |- *.
     rewrite
@@ -339,8 +339,8 @@ Require Import BDDvar_ad_nat.
     rewrite H9 in H0.  cut False.  tauto.  apply H0.  trivial.
     apply Neqb_complete.  assumption.  auto.  apply Neqb_complete.
     assumption.  auto.  apply Neqb_complete.  assumption.  auto.
-    elim (Neqb x x').  auto.  auto.  elim (Neqb r r').  auto.  auto.
-    elim (Neqb l l').  auto.  auto.
+    elim (N.eqb x x').  auto.  auto.  elim (N.eqb r r').  auto.  auto.
+    elim (N.eqb l l').  auto.  auto.
   Qed.
 
   Definition BDDsharing_OK (bs : BDDstate) (share : BDDsharing_map) :=
@@ -425,7 +425,7 @@ Require Import BDDvar_ad_nat.
             (exists r : BDDvar,
                MapGet _ bs node = Some (x, (l, r)) /\
                BDDcompare x n = Datatypes.Lt /\
-               Neqb l r = false /\ BDDbounded bs l x /\ BDDbounded bs r x)))).  intros H0.  elim H0; intro.  left.  assumption.
+               N.eqb l r = false /\ BDDbounded bs l x /\ BDDbounded bs r x)))).  intros H0.  elim H0; intro.  left.  assumption.
     elim H1; intro.  right; left; assumption.  inversion H2.  inversion H3.
     inversion H4.  right; right.  unfold in_dom in |- *.  rewrite (proj1 H5); reflexivity.  apply BDDbounded_lemma.  assumption.
   Qed.
@@ -440,7 +440,7 @@ Require Import BDDvar_ad_nat.
     rewrite
      (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) counter)
      .
-    cut (Neqb counter counter = true).  intro H.  rewrite H.  trivial.
+    cut (N.eqb counter counter = true).  intro H.  rewrite H.  trivial.
     apply Neqb_correct.
   Qed.
 
@@ -454,8 +454,8 @@ Require Import BDDvar_ad_nat.
     intro cfg.  elim cfg.  clear cfg.  intro y.  intro y0.  elim y0.  clear y0.
     simpl in |- *.  intros y0 y1 l r x H a l1 r1 x1 H0.  elim H.  clear H.  intros H H1.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) y y1 (x, (l, r)) a).
-    cut (Neqb y1 a = false).  intro H2.  rewrite H2.  assumption.
-    cut (Neqb y1 a <> true).  intros H2.  apply not_true_is_false.  assumption.
+    cut (N.eqb y1 a = false).  intro H2.  rewrite H2.  assumption.
+    cut (N.eqb y1 a <> true).  intros H2.  apply not_true_is_false.  assumption.
     unfold not in |- *.  intros H2.  elim H1.  intros H3 H4.  elim H4.  intros H5 H6.  lapply (H5 a).
     intros H7.  rewrite H7 in H0.  discriminate H0.  lapply (Neqb_complete y1 a).
     intros H7.  rewrite H7.  apply Nleb_refl.  assumption.
@@ -469,9 +469,9 @@ Require Import BDDvar_ad_nat.
     intro cfg.  elim cfg.  clear cfg.  intros bs y.  elim y.  clear y.
     intros share counter l l' r r' a x x'.  simpl in |- *.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) a).
-    cut (Neqb counter a = true \/ Neqb counter a = false).  intro H.  elim H.
+    cut (N.eqb counter a = true \/ N.eqb counter a = false).  intro H.  elim H.
     clear H.  intro H.  left.  rewrite (Neqb_complete counter a).  trivial.
-    assumption.  intro H0.  rewrite H0.  auto.  elim (Neqb counter a).  auto.
+    assumption.  intro H0.  rewrite H0.  auto.  elim (N.eqb counter a).  auto.
     auto.
   Qed.
 
@@ -484,7 +484,7 @@ Require Import BDDvar_ad_nat.
     intro cfg.  elim cfg.  clear cfg.  intro y.  intro y0.  elim y0.  clear y0.  simpl in |- *.
     intro y0.  intro y1.  intro l.  intro l1.  intro r.  intro r1.  intro a.  intro x.  intro x1.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) y y1 (x, (l, r)) a).
-    case (Neqb y1 a).  intro H.  left.  injection H.  intros H0 H1 H2.  rewrite H0.
+    case (N.eqb y1 a).  intro H.  left.  injection H.  intros H0 H1 H2.  rewrite H0.
     rewrite H1.  rewrite H2.  trivial. intros H.  right. assumption.
   Qed.
 
@@ -498,8 +498,8 @@ Require Import BDDvar_ad_nat.
     intros H0 H1.  elim H1.  clear H1.  intros H1 H2.  clear H1 H0.  elim H.  clear H.
     intros H H0.  clear H0.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) y y1 (x, (l, r)) BDDzero).
-    cut (Neqb y1 BDDzero = false).  intro H0.  rewrite H0.  assumption.
-    cut (Neqb y1 BDDzero = true -> False).  intro H0.  apply not_true_is_false.
+    cut (N.eqb y1 BDDzero = false).  intro H0.  rewrite H0.  assumption.
+    cut (N.eqb y1 BDDzero = true -> False).  intro H0.  apply not_true_is_false.
     exact H0.  intro H0.  rewrite (Neqb_complete y1 BDDzero) in H2.
     compute in H2.  discriminate H2.  assumption.
   Qed.
@@ -514,8 +514,8 @@ Require Import BDDvar_ad_nat.
     intros H0 H1.  elim H1.  clear H1.  intros H1 H2.  clear H1 H0.  elim H.  clear H.
     intros H H0.  clear H.  elim H0.  clear H0.  intros H H0.  clear H0.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) y y1 (x, (l, r)) BDDone).
-    cut (Neqb y1 BDDone = false).  intro H0.  rewrite H0.  assumption.
-    cut (Neqb y1 BDDone = true -> False).  intro H0.  apply not_true_is_false.
+    cut (N.eqb y1 BDDone = false).  intro H0.  rewrite H0.  assumption.
+    cut (N.eqb y1 BDDone = true -> False).  intro H0.  apply not_true_is_false.
     exact H0.  intro H0.  rewrite (Neqb_complete y1 BDDone) in H2.
     compute in H2.  discriminate H2.  assumption.
   Qed.
@@ -525,7 +525,7 @@ Require Import BDDvar_ad_nat.
    BDDconfig_OK cfg ->
    node_OK (fst cfg) l ->
    node_OK (fst cfg) r ->
-   Neqb l r <> true ->
+   N.eqb l r <> true ->
    (forall (xl : BDDvar) (ll rl : ad),
     MapGet _ (fst cfg) l = Some (xl, (ll, rl)) ->
     BDDcompare xl x = Datatypes.Lt) ->
@@ -628,7 +628,7 @@ Require Import BDDvar_ad_nat.
     intro cfg.  elim cfg.  clear cfg.  intro y.  intro y0.  elim y0.  clear y0.
     intros y0 y1 x l r a H.  split.  simpl in |- *.  intros a0 H0.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) y y1 (x, (l, r)) a0).
-    cut (Neqb y1 a0 = false).  intro H1.  rewrite H1.  elim H.  intros.  elim H3.
+    cut (N.eqb y1 a0 = false).  intro H1.  rewrite H1.  elim H.  intros.  elim H3.
     intros.  elim H5.  intros.  apply H6.  apply ad_S_le_then_le.  assumption.
     apply ad_S_le_then_neq.  assumption.  simpl in |- *.  elim H.  intros.  elim H1.
     intros.  elim H3.  intros.  apply le_then_le_S.  assumption.
@@ -663,7 +663,7 @@ Proof.
     rewrite <- H4 in H3.  rewrite <- H6 in H3.  rewrite <- H7 in H3.
     rewrite (BDDshare_put_puts share x l r counter) in H3.  injection H3.
     intro H8.  rewrite (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) a).
-    cut (Neqb counter a = true).  intro H9.  rewrite H9.  trivial.  rewrite H8.
+    cut (N.eqb counter a = true).  intro H9.  rewrite H9.  trivial.  rewrite H8.
     apply Neqb_correct.  
     apply
      BDDshare_put_no_new_node
@@ -677,7 +677,7 @@ Proof.
     simpl in H4.  rewrite H4.  apply BDDshare_put_puts.  simpl in H3.
     rewrite (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) a)
       in H3.
-    simpl in H4.  cut (Neqb counter a = true).  intros H5.  rewrite H5 in H3.
+    simpl in H4.  cut (N.eqb counter a = true).  intros H5.  rewrite H5 in H3.
     inversion H3.  trivial.  rewrite H4.  apply Neqb_correct.  intro H5.
     clear H4.
     cut
@@ -694,7 +694,7 @@ Qed.
    BDDconfig_OK cfg ->
    node_OK (fst cfg) l ->
    node_OK (fst cfg) r ->
-   Neqb l r <> true ->
+   N.eqb l r <> true ->
    (forall (xl : BDDvar) (ll rl : ad),
     MapGet _ (fst cfg) l = Some (xl, (ll, rl)) ->
     BDDcompare xl x = Datatypes.Lt) ->
@@ -764,13 +764,13 @@ Qed.
     rewrite
      (MapPut_semantics (BDDvar * (ad * ad)) bs counter (x, (l, r)) counter)
      .
-    cut (Neqb counter counter = true).  intro H6.  rewrite H6.  trivial.
+    cut (N.eqb counter counter = true).  intro H6.  rewrite H6.  trivial.
     apply Neqb_correct.
   Qed.
 
   Definition BDDmake (cfg : BDDconfig) (x : BDDvar) 
     (l r : ad) :=
-    if Neqb l r
+    if N.eqb l r
     then (cfg, l)
     else
      match cfg with
@@ -793,10 +793,10 @@ Qed.
     MapGet _ (fst cfg) r = Some (xr, (lr, rr)) ->
     BDDcompare xr x = Datatypes.Lt) ->
    BDDconfig_OK (fst (BDDmake cfg x l r)) /\
-   (Neqb l r = false ->
+   (N.eqb l r = false ->
     MapGet _ (fst (fst (BDDmake cfg x l r))) (snd (BDDmake cfg x l r)) =
     Some (x, (l, r))) /\
-   (Neqb l r = true -> snd (BDDmake cfg x l r) = l) /\
+   (N.eqb l r = true -> snd (BDDmake cfg x l r) = l) /\
    (forall (a l' r' : ad) (x' : BDDvar),
     (MapGet _ (fst (fst (BDDmake cfg x l r))) a = Some (x', (l', r')) ->
      MapGet _ (fst cfg) a = Some (x', (l', r')) \/
@@ -807,7 +807,7 @@ Qed.
   Proof.
     intro cfg.  elim cfg.  clear cfg.  intros bs y.  elim y.  clear y.
     intros share counter l r x.  intros H H0 H1 H2 H3.
-    cut (Neqb l r = true \/ Neqb l r = false).  intro H4.  elim H4.  clear H4.
+    cut (N.eqb l r = true \/ N.eqb l r = false).  intro H4.  elim H4.  clear H4.
     intro H4.  unfold BDDmake in |- *.  rewrite H4.  split.  assumption.  split.  intro H5.
     discriminate H5.  split.  simpl in |- *.  auto.  split.  simpl in |- *.  auto.  simpl in |- *.
     exact H0.  intro H5.  unfold BDDmake in |- *.  rewrite H5.
@@ -843,5 +843,5 @@ Qed.
     simpl in H6.  rewrite <- H7 in H6.
     cut (BDDshare_lookup share x l r = Some a).  rewrite y.  discriminate.
     elim H.  intros H8 H9.  elim H9.  intros H10 H11.  unfold BDDsharing_OK in H10.
-    exact (proj2 (H10 x l r a) H6).  elim (Neqb l r).  auto.  auto.
+    exact (proj2 (H10 x l r a) H6).  elim (N.eqb l r).  auto.  auto.
   Qed.
