@@ -79,8 +79,7 @@ Lemma BDDneg_1_1_eq_1 :
  BDDneg_1_1 cfg memo node bound = BDDneg_1 (cfg, node, memo) bound.
 Proof.
   simple induction bound.  intros cfg memo node.  simpl in |- *.  reflexivity.  simpl in |- *.  intros n H cfg memo node.  elim (MapGet (BDDvar * (ad * ad)) (fst cfg) node).
-  Focus 2.
-  reflexivity.  intro a.  elim a.  intros y y0.  elim y0.  intros y1 y2.  cut (BDDneg_1_1 cfg memo y1 n = BDDneg_1 (cfg, y1, memo) n).
+  2:{ reflexivity. } intro a.  elim a.  intros y y0.  elim y0.  intros y1 y2.  cut (BDDneg_1_1 cfg memo y1 n = BDDneg_1 (cfg, y1, memo) n).
   intro H0.  rewrite H0.  elim (BDDneg_1 (cfg, y1, memo) n).  intros y3 y4.  elim y3.
   intros y5 y6.  simpl in |- *.  cut (BDDneg_1_1 y5 y4 y2 n = BDDneg_1 (y5, y2, y4) n).  intro H1.
   rewrite H1.  elim (BDDneg_1 (y5, y2, y4) n).  intros y7 y8.  simpl in |- *.  elim y7.  intros y9 y10.

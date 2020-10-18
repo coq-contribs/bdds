@@ -80,15 +80,15 @@ Lemma bool_fun_of_BDD_1_ext :
  bool_fun_ext (bool_fun_of_BDD_1 cfg node bound). 
 Proof.
   simple induction bound.  intro cfg.  elim cfg.  clear cfg.  intros bs y.  elim y.  clear y.
-  intros share counter.  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node). Focus 2.
-  elim (N.eqb node BDDzero).  unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_zero in |- *; reflexivity.
-  unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_one in |- *; reflexivity.
+  intros share counter.  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node).
+  2:{ elim (N.eqb node BDDzero).  unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_zero in |- *; reflexivity.
+  unfold bool_fun_ext in |- *.  unfold bool_fun_eval, bool_fun_one in |- *; reflexivity. }
   unfold bool_fun_ext in |- *.  unfold bool_fun_eval in |- *.  unfold bool_fun_zero in |- *.  intro a.
   intro vb.  intro vb'.  intro H.  elim a.  intros y y0.  elim y0.  reflexivity. intro n.
   intro H.  intro cfg.  elim cfg.  clear cfg.  intros bs y.  elim y.  clear y.  intros share counter.
-  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node).  Focus 2. elim (N.eqb node BDDzero).
+  intros node.  simpl in |- *.  elim (MapGet (BDDvar * (ad * ad)) bs node). 2:{ elim (N.eqb node BDDzero).
   unfold bool_fun_ext, bool_fun_zero in |- *.  unfold bool_fun_eval in |- *; reflexivity.  
-  unfold bool_fun_ext, bool_fun_one in |- *.  unfold bool_fun_eval in |- *; reflexivity.  intros a.
+  unfold bool_fun_ext, bool_fun_one in |- *.  unfold bool_fun_eval in |- *; reflexivity. } intros a.
   elim a.  intros y y0.  elim y0. intros y1 y2.  cut (bool_fun_ext (bool_fun_of_BDD_1 (bs, (share, counter)) y2 n)).
   intro H0.  cut (bool_fun_ext (bool_fun_of_BDD_1 (bs, (share, counter)) y1 n)).  intro H1.
   unfold bool_fun_ext in |- *.  intros vb vb' H2.  unfold bool_fun_eval in |- *.  unfold bool_fun_ext in H0, H1.
